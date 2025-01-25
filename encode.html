@@ -68,7 +68,7 @@
         </div>
 
         <div class="vertical">
-            <button id="encode">Encode</button>
+            <button onclick="hide();">Encode</button>
             <canvas class="image" id="outputImageCanvas" width="768" height="768"></canvas>
             <button onclick="downloadOutputImage();" style="margin-top: 12px;">Download</button>
         </div>
@@ -123,6 +123,12 @@
         var link = document.createElement('a');
         link.download = 'encoded.png';
         link.href = document.getElementById('outputImageCanvas').toDataURL()
+        link.click();
+    }
+    function downloadTextImage() {
+        var link = document.createElement('a');
+        link.download = 'text.png';
+        link.href = document.getElementById('textImageCanvas').toDataURL()
         link.click();
     }
 </script>
