@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Decode Message</title>
+    <style>
+        .horizontal {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .vertical {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .image {
+            border: 1px solid #000;
+            height: 20em;
+            width: 20em;
+        }
+
+        @font-face {
+            font-family: 'ComicSansMS';
+            src: url('Comic Sans MS.ttf') format('truetype');
+        }
+
+        h1 {
+            font-family: 'ComicSansMS';
+            text-align: center;
+        }
+
+        textarea {
+            margin-bottom: 10px;
+            height: 3em;
+            width: 20em;
+        }
+
+        input {
+            height: 3em;
+            padding: 3px;
+            margin: 2px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            height: 3em;
+            padding: 0 2em;
+            margin: 4px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body class="vertical">
+    <h1>Decode Message</h1>
+    <div class="horizontal">
+        <div class="vertical">
+            <input type="file" id="inputImageFile" name="filename" accept="image/png">
+            <canvas class="image" id="inputImageCanvas" width="768" height="768"></canvas>
+        </div>
+
+        <div class="vertical">
+            <button id="encode" onclick="unhide();">Decode</button>
+            <canvas class="image" id="outputImageCanvas" width="768" height="768"></canvas>
+        </div>
+    </div>
+</body>
+<script>
+    const inputImageCanvas = document.getElementById('inputImageCanvas');
+    const inputImageCtx = inputImageCanvas.getContext('2d');
+    const outputImageCanvas = document.getElementById('outputImageCanvas');
+    const outputImageCtx = outputImageCanvas.getContext('2d');
+
+    document.getElementById('inputImageFile').onchange = function (e) {
+        var img = new Image();
+        img.onload = drawInputImage;
+        img.src = URL.createObjectURL(this.files[0]);
+    };
+    function drawInputImage() {
+        inputImageCanvas.width = this.width;
+        inputImageCanvas.height = this.height;
+        inputImageCtx.drawImage(this, 0, 0);
+        outputImageCanvas.width = this.width;
+        outputImageCanvas.height = this.height;
+    }
+
+    function unhide() {
+        var inputImagePixels = inputImageCtx.getImageData(0, 0, inputImageCanvas.width, inputImageCanvas.height)
+        var outputImagePixels = inputImageCtx.getImageData(0, 0, outputImageCanvas.width, outputImageCanvas.height)
+        for (var i = 0; i < outputImagePixels.data.length; i += 4) {
+            outputImagePixels.data[i + 0] = (inputImagePixels.data[i] & 1) * 255;
+            outputImagePixels.data[i + 1] = (inputImagePixels.data[i] & 1) * 255;
+            outputImagePixels.data[i + 2] = (inputImagePixels.data[i] & 1) * 255;
+            outputImagePixels.data[i + 3] = 255;
+        }
+        outputImageCtx.putImageData(outputImagePixels, 0, 0);
+    }
+</script>
+
+</html>
