@@ -30,6 +30,12 @@
     <canvas id="myCanvas" width="768" height="768"></canvas>
 </body>
 <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    // draw text on canvas
+    ctx.font = '30px ComicSansMS';
+    ctx.fillStyle = 'black';
+    ctx.fillText('Coco is the best and Paul is second best', 10, 50);
 </script>
 
 </html>
