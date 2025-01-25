@@ -44,6 +44,13 @@
             margin: 2px;
             margin-bottom: 10px;
         }
+
+        button {
+            height: 3em;
+            padding: 0 2em;
+            margin: 4px;
+            margin-bottom: 12px;
+        }
     </style>
 </head>
 
@@ -72,7 +79,10 @@
     const inputImageCtx = inputImageCanvas.getContext('2d');
     const textImageCanvas = document.getElementById('textImageCanvas');
     const textImageCtx = textImageCanvas.getContext('2d');
+    const outputImageCanvas = document.getElementById('outputImageCanvas');
+    const outputImageCtx = outputImageCanvas.getContext('2d');
 
+    onload = writeMessage;
     message.addEventListener('input', writeMessage);
     function writeMessage() {
         textImageCtx.clearRect(0, 0, textImageCanvas.width, textImageCanvas.height);
@@ -89,6 +99,8 @@
         inputImageCanvas.width = this.width;
         inputImageCanvas.height = this.height;
         inputImageCtx.drawImage(this, 0, 0);
+        outputImageCanvas.width = this.width;
+        outputImageCanvas.height = this.height;
         textImageCanvas.width = this.width;
         textImageCanvas.height = this.height;
         writeMessage();
