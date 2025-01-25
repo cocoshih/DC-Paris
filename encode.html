@@ -86,7 +86,10 @@
     onload = writeMessage;
     message.addEventListener('input', writeMessage);
     function writeMessage() {
-        textImageCtx.clearRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        // fill with white
+        textImageCtx.fillStyle = 'white';
+        textImageCtx.fillRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        // write message
         textImageCtx.font = '60px ComicSansMS';
         textImageCtx.fillStyle = 'black';
         textImageCtx.fillText(message.value, 10, 50);
