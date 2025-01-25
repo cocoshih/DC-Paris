@@ -40,8 +40,17 @@
 
 <body class="vertical">
     <h1>Hidden Message</h1>
-    <textarea id="message" placeholder="Enter your message"></textarea>
-    <canvas id="myCanvas" width="768" height="768"></canvas>
+    <div class="horizontal">
+        <div class="vertical">
+            <input type="file" name="filename" accept="image/png">
+            <canvas id="myCanvas" width="768" height="768"></canvas>
+        </div>
+
+        <div class="vertical">
+            <textarea id="message" placeholder="Enter your message"></textarea>
+            <canvas id="myCanvas" width="768" height="768"></canvas>
+        </div>
+    </div>
 </body>
 <script>
     const message = document.getElementById('message');
