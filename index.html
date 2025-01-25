@@ -63,15 +63,17 @@
 </body>
 <script>
     const message = document.getElementById('message');
-    const canvas = document.getElementById('textImageCanvas');
-    const ctx = canvas.getContext('2d');
+    const inputImageCanvas = document.getElementById('inputImageCanvas');
+    const inputImageCtx = inputImageCanvas.getContext('2d');
+    const textImageCanvas = document.getElementById('textImageCanvas');
+    const textImageCtx = textImageCanvas.getContext('2d');
 
     message.addEventListener('input', writeMessage);
     function writeMessage() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = '60px ComicSansMS';
-        ctx.fillStyle = 'black';
-        ctx.fillText(message.value, 10, 50);
+        textImageCtx.clearRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        textImageCtx.font = '60px ComicSansMS';
+        textImageCtx.fillStyle = 'black';
+        textImageCtx.fillText(message.value, 10, 50);
     }
     document.getElementById('inputImageFile').onchange = function (e) {
         var img = new Image();
@@ -79,11 +81,9 @@
         img.src = URL.createObjectURL(this.files[0]);
     };
     function drawInputImage() {
-        var canvasInputImage = document.getElementById('inputImageCanvas');
-        canvasInputImage.width = this.width;
-        canvasInputImage.height = this.height;
-        var ctxInputImage = canvasInputImage.getContext('2d');
-        ctxInputImage.drawImage(this, 0, 0);
+        inputImageCanvas.width = this.width;
+        inputImageCanvas.height = this.height;
+        inputImageCtx.drawImage(this, 0, 0);
         textImageCanvas.width = this.width;
         textImageCanvas.height = this.height;
         writeMessage();
