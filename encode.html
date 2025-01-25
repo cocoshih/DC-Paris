@@ -89,11 +89,32 @@
         // fill with white
         textImageCtx.fillStyle = 'white';
         textImageCtx.fillRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        //// write message
+        // lineheight = 100;
+        // textImageCtx.font = lineheight + 'px ComicSansMS';
+        // textImageCtx.fillStyle = 'black';
+        // var words = message.value.split('\n');
+        // for (var i = 0; i < lines.length; i++) {
+        //     textImageCtx.fillText(lines[i], 0, (i + 1) * lineheight);
+        // }
         // write message
         lineheight = 100;
         textImageCtx.font = lineheight + 'px ComicSansMS';
         textImageCtx.fillStyle = 'black';
-        var words = message.value.split('\n');
+        var words = message.value.split(' ');
+        var lines = [];
+        var line = '';
+        for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var testWidth = testLine.length * (lineheight * 0.425);
+            if (testWidth > textImageCanvas.width && n > 0) {
+                lines.push(line);
+                line = words[n] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        lines.push(line);
         for (var i = 0; i < lines.length; i++) {
             textImageCtx.fillText(lines[i], 0, (i + 1) * lineheight);
         }
