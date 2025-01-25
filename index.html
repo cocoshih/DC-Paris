@@ -16,9 +16,10 @@
             flex-direction: column;
         }
 
-        canvas {
+        .image {
             border: 1px solid #000;
             height: 20em;
+            width: 20em;
         }
 
         @font-face {
@@ -42,7 +43,6 @@
             padding: 3px;
             margin: 2px;
             margin-bottom: 10px;
-
         }
     </style>
 </head>
@@ -51,13 +51,13 @@
     <h1>Hidden Message</h1>
     <div class="horizontal">
         <div class="vertical">
-            <input type="file" name="filename" accept="image/png">
-            <canvas id="myCanvas" width="768" height="768"></canvas>
+            <input type="file" id="inputImageFile" name="filename" accept="image/png">
+            <canvas class="image" id="inputImage" width="768" height="768"></canvas>
         </div>
 
         <div class="vertical">
             <textarea id="message" placeholder="Enter your message"></textarea>
-            <canvas id="myCanvas" width="768" height="768"></canvas>
+            <canvas class="image" id="myCanvas" width="768" height="768"></canvas>
         </div>
     </div>
 </body>
@@ -72,6 +72,19 @@
         ctx.font = '30px ComicSansMS';
         ctx.fillStyle = 'black';
         ctx.fillText(message.value, 10, 50);
+    }
+    document.getElementById('inputImageFile').onchange = function (e) {
+        var img = new Image();
+        img.onload = drawInputImage;
+        img.src = URL.createObjectURL(this.files[0]);
+    };
+    function drawInputImage() {
+        var canvasInputImage = document.getElementById('inputImage');
+        canvasInputImage.width = this.width;
+        canvasInputImage.height = this.height;
+
+        var ctxInputImage = canvasInputImage.getContext('2d');
+        ctxInputImage.drawImage(this, 0, 0);
     }
     onload = writeMessage;
 </script>
