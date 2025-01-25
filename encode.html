@@ -70,6 +70,7 @@
         <div class="vertical">
             <button id="encode">Encode</button>
             <canvas class="image" id="outputImageCanvas" width="768" height="768"></canvas>
+            <button onclick="downloadOutputImage();" style="margin-top: 12px;">Download</button>
         </div>
     </div>
 </body>
@@ -114,7 +115,12 @@
             outputImagePixels.data[i] = (inputImagePixels.data[i] & 0xFE) | (textImagePixels.data[i] & 1);
         }
         outputImageCtx.putImageData(outputImagePixels, 0, 0);
-
+    }
+    function downloadOutputImage() {
+        var link = document.createElement('a');
+        link.download = 'encoded.png';
+        link.href = document.getElementById('outputImageCanvas').toDataURL()
+        link.click();
     }
 </script>
 
