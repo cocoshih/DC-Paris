@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hidden Message</title>
+    <style>
+        .horizontal {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .vertical {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .image {
+            border: 1px solid #000;
+            height: 20em;
+            width: 20em;
+        }
+
+        @font-face {
+            font-family: 'ComicSansMS';
+            src: url('Comic Sans MS.ttf') format('truetype');
+        }
+
+        h1 {
+            font-family: 'ComicSansMS';
+            text-align: center;
+        }
+
+        textarea {
+            margin-bottom: 10px;
+            height: 3em;
+            width: 20em;
+        }
+
+        input {
+            height: 3em;
+            padding: 3px;
+            margin: 2px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="vertical">
+    <h1>Hidden Message</h1>
+    <div class="horizontal">
+        <div class="vertical">
+            <input type="file" id="inputImageFile" name="filename" accept="image/png">
+            <canvas class="image" id="inputImageCanvas" width="768" height="768"></canvas>
+        </div>
+
+        <div class="vertical">
+            <textarea id="message" placeholder="Enter your message"></textarea>
+            <canvas class="image" id="textImageCanvas" width="768" height="768"></canvas>
+        </div>
+    </div>
+</body>
+<script>
+    const message = document.getElementById('message');
+    const inputImageCanvas = document.getElementById('inputImageCanvas');
+    const inputImageCtx = inputImageCanvas.getContext('2d');
+    const textImageCanvas = document.getElementById('textImageCanvas');
+    const textImageCtx = textImageCanvas.getContext('2d');
+
+    message.addEventListener('input', writeMessage);
+    function writeMessage() {
+        textImageCtx.clearRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        textImageCtx.font = '60px ComicSansMS';
+        textImageCtx.fillStyle = 'black';
+        textImageCtx.fillText(message.value, 10, 50);
+    }
+    document.getElementById('inputImageFile').onchange = function (e) {
+        var img = new Image();
+        img.onload = drawInputImage;
+        img.src = URL.createObjectURL(this.files[0]);
+    };
+    function drawInputImage() {
+        inputImageCanvas.width = this.width;
+        inputImageCanvas.height = this.height;
+        inputImageCtx.drawImage(this, 0, 0);
+        textImageCanvas.width = this.width;
+        textImageCanvas.height = this.height;
+        writeMessage();
+    }
+    onload = writeMessage;
+</script>
+
+</html>
