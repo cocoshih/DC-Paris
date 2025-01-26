@@ -14,19 +14,20 @@
             <canvas class="image" id="inputImageCanvas" width="768" height="768"></canvas>
             <textarea id="token" placeholder="Replicate token"></textarea>
             <textarea id="prompt" placeholder="Enter your message"></textarea>
-            <button id="generateButton" onclick="generateFromPrompt();" style="margin-top: 12px;">Generate</button>
+            <button id="generateButton" onclick="generateFromPrompt();">Generate</button>
         </div>
 
         <div class="vertical">
             <input type="file" id="codedImageFile" name="filename" accept="image/png">
-            <textarea id="message" placeholder="Enter your message"></textarea>
             <canvas class="image" id="textImageCanvas" width="768" height="768"></canvas>
+            <textarea id="message" placeholder="Enter your message"></textarea>
+            <button id="writeButton" onclick="writeMessage();">Encode</button>
         </div>
 
         <div class="vertical">
             <button onclick="hide();">Encode</button>
             <canvas class="image" id="outputImageCanvas" width="768" height="768"></canvas>
-            <button onclick="downloadOutputImage();" style="margin-top: 12px;">Download</button>
+            <button onclick="downloadOutputImage();">Download</button>
         </div>
     </div>
 </body>
