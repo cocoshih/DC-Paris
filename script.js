@@ -85,3 +85,56 @@ function downloadTextImage() {
     link.href = document.getElementById('textImageCanvas').toDataURL()
     link.click();
 }
+
+async function generateFromPrompt() {
+  generateButton.disabled = true;
+  var url = await generateImage(prompt.value);
+  // var url = "https://replicate.delivery/xezq/6pY3fI1kaySeAk1fGb38WpdDLwsBzGwjaYa59PYrvXdfvLjQB/out-0.webp";
+  var img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = url;
+  img.onload = drawInputImage;
+}
+var data;
+async function generateImage(txt) {
+  generateButton.disabled = true;
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token.value);
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Prefer", "wait");
+
+  var raw = JSON.stringify({
+    version: "b761fa16918356ee07f31fad9b0d41d8919b9ff08f999e2d298a5a35b672f47e",
+    input: {
+      model: "dev",
+      prompt: txt,
+      go_fast: false,
+      lora_scale: 1,
+      megapixels: "1",
+      num_outputs: 1,
+      aspect_ratio: "1:1",
+      output_format: "webp",
+      guidance_scale: 3.5,
+      output_quality: 80,
+      prompt_strength: 0.8,
+      extra_lora_scale: 0.8,
+      num_inference_steps: 28,
+    },
+  });
+
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  var response = await fetch(
+    "https://api.replicate.com/v1/predictions",
+    requestOptions
+  );
+  data = await response.json();
+  var link = data.output[0];
+  // console.log(data);
+  return link;
+}
