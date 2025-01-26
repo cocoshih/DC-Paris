@@ -1,9 +1,4 @@
-# DC-Paris
+# HoyaHack
 
-HOYA Hack
-
-local run:
-
-```bash
-python -m http.server
-```
+- Encoding tool: https://cocoshih.github.io/DC-Paris/encode
+- Decoding tool: https://cocoshih.github.io/DC-Paris/decode
