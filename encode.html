@@ -63,6 +63,7 @@
         </div>
 
         <div class="vertical">
+            <input type="file" id="codedImageFile" name="filename" accept="image/png">
             <textarea id="message" placeholder="Enter your message"></textarea>
             <canvas class="image" id="textImageCanvas" width="768" height="768"></canvas>
         </div>
@@ -118,6 +119,14 @@
         for (var i = 0; i < lines.length; i++) {
             textImageCtx.fillText(lines[i], 0, (i + 1) * lineheight);
         }
+    }
+    document.getElementById('codedImageFile').onchange = function (e) {
+        var img = new Image();
+        img.onload = drawCodedImage;
+        img.src = URL.createObjectURL(this.files[0]);
+    };
+    function drawCodedImage() {
+        textImageCtx.drawImage(this, 0, 0, textImageCanvas.width, textImageCanvas.height);
     }
     document.getElementById('inputImageFile').onchange = function (e) {
         var img = new Image();
