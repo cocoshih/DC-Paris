@@ -149,7 +149,7 @@
         var inputImagePixels = inputImageCtx.getImageData(0, 0, inputImageCanvas.width, inputImageCanvas.height)
         var outputImagePixels = inputImageCtx.getImageData(0, 0, outputImageCanvas.width, outputImageCanvas.height)
         for (var i = 0; i < outputImagePixels.data.length; i += 4) {
-            outputImagePixels.data[i] = (inputImagePixels.data[i] & 0xFE) | (textImagePixels.data[i] & 1);
+            outputImagePixels.data[i] = (inputImagePixels.data[i] & 0xFE) | ((textImagePixels.data[i] >> 7) & 1);
         }
         outputImageCtx.putImageData(outputImagePixels, 0, 0);
     }
