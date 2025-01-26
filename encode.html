@@ -12,6 +12,9 @@
         <div class="vertical">
             <input type="file" id="inputImageFile" name="filename" accept="image/png">
             <canvas class="image" id="inputImageCanvas" width="768" height="768"></canvas>
+            <textarea id="token" placeholder="Replicate token"></textarea>
+            <textarea id="prompt" placeholder="Enter your message"></textarea>
+            <button id="generateButton" onclick="generateFromPrompt();" style="margin-top: 12px;">Generate</button>
         </div>
 
         <div class="vertical">
