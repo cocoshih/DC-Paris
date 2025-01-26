@@ -134,8 +134,8 @@
     }
     async function generateFromPrompt() {
         generateButton.disabled = true;
-        // var url = await generateImage(prompt.value);
-        var url = "https://replicate.delivery/xezq/6pY3fI1kaySeAk1fGb38WpdDLwsBzGwjaYa59PYrvXdfvLjQB/out-0.webp";
+        var url = await generateImage(prompt.value);
+        // var url = "https://replicate.delivery/xezq/6pY3fI1kaySeAk1fGb38WpdDLwsBzGwjaYa59PYrvXdfvLjQB/out-0.webp";
         var img = new Image();
         img.crossOrigin = "anonymous";
         img.src = url;
