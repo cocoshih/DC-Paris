@@ -42,8 +42,7 @@
     const textImageCtx = textImageCanvas.getContext('2d');
     const outputImageCanvas = document.getElementById('outputImageCanvas');
     const outputImageCtx = outputImageCanvas.getContext('2d');
-    onload = writeMessage;
-    message.addEventListener('input', writeMessage);
+
     document.getElementById('codedImageFile').onchange = function (e) {
         var img = new Image();
         img.onload = drawCodedImage;
