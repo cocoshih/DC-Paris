@@ -141,7 +141,15 @@
         outputImageCanvas.height = this.height;
         textImageCanvas.width = this.width;
         textImageCanvas.height = this.height;
-        writeMessage();
+        if (message.value != '') {
+            writeMessage();
+        } else if (document.getElementById('codedImageFile').files.length > 0) {
+            var img = new Image();
+            img.onload = drawCodedImage;
+            img.src = URL.createObjectURL(document.getElementById('codedImageFile').files[0]);
+            textImageCtx.fillStyle = 'white';
+            textImageCtx.fillRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        }
     }
 
     function hide() {
