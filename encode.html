@@ -4,6 +4,7 @@
 <head>
     <title>Encode Message</title>
     <link rel="stylesheet" href="styles.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
 </head>
 
 <body class="vertical">
@@ -17,12 +18,16 @@
             <button id="generateButton" onclick="generateFromPrompt();">Generate</button>
         </div>
 
+        <div class="separator"></div>
+
         <div class="vertical">
             <input type="file" id="codedImageFile" name="filename" accept="image/png">
             <canvas class="image" id="textImageCanvas" width="768" height="768"></canvas>
             <textarea id="message" placeholder="Enter your message"></textarea>
             <button id="writeButton" onclick="writeMessage();">Write</button>
         </div>
+
+        <div class="separator"></div>
 
         <div class="vertical">
             <button onclick="hide();">Encode</button>
