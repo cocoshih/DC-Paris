@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GENcode Message</title>
+    <style>
+        .horizontal {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .vertical {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .image {
+            border: 1px solid #000;
+            height: 20em;
+            width: 20em;
+        }
+
+        @font-face {
+            font-family: 'ComicSansMS';
+            src: url('Comic Sans MS.ttf') format('truetype');
+        }
+
+        h1 {
+            font-family: 'ComicSansMS';
+            text-align: center;
+        }
+
+        textarea {
+            margin-bottom: 10px;
+            height: 3em;
+            width: 20em;
+        }
+
+        input {
+            height: 3em;
+            padding: 3px;
+            margin: 2px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            height: 3em;
+            padding: 0 2em;
+            margin: 4px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body class="vertical">
+    <h1>GENcode Message</h1>
+    <div class="horizontal">
+        <div class="vertical">
+            <textarea id="prompt" placeholder="Enter your message"></textarea>
+            <canvas class="image" id="inputImageCanvas" width="768" height="768"></canvas>
+            <button id="generateButton" onclick="generateFromPrompt();" style="margin-top: 12px;">Generate</button>
+        </div>
+
+        <div class="vertical">
+            <textarea id="message" placeholder="Enter your message"></textarea>
+            <canvas class="image" id="textImageCanvas" width="768" height="768"></canvas>
+        </div>
+
+        <div class="vertical">
+            <button onclick="hide();">Encode</button>
+            <canvas class="image" id="outputImageCanvas" width="768" height="768"></canvas>
+            <button onclick="downloadOutputImage();" style="margin-top: 12px;">Download</button>
+        </div>
+    </div>
+</body>
+<script>
+    const message = document.getElementById('message');
+    const prompt = document.getElementById('prompt');
+    const inputImageCanvas = document.getElementById('inputImageCanvas');
+    const inputImageCtx = inputImageCanvas.getContext('2d');
+    const textImageCanvas = document.getElementById('textImageCanvas');
+    const textImageCtx = textImageCanvas.getContext('2d');
+    const outputImageCanvas = document.getElementById('outputImageCanvas');
+    const outputImageCtx = outputImageCanvas.getContext('2d');
+
+    onload = writeMessage;
+    message.addEventListener('input', writeMessage);
+    function writeMessage() {
+        // fill with white
+        textImageCtx.fillStyle = 'white';
+        textImageCtx.fillRect(0, 0, textImageCanvas.width, textImageCanvas.height);
+        //// write message
+        // lineheight = 100;
+        // textImageCtx.font = lineheight + 'px ComicSansMS';
+        // textImageCtx.fillStyle = 'black';
+        // var words = message.value.split('\n');
+        // for (var i = 0; i < lines.length; i++) {
+        //     textImageCtx.fillText(lines[i], 0, (i + 1) * lineheight);
+        // }
+        // write message
+        lineheight = 100;
+        textImageCtx.font = lineheight + 'px ComicSansMS';
+        textImageCtx.fillStyle = 'black';
+        var words = message.value.split(' ');
+        var lines = [];
+        var line = '';
+        for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var testWidth = testLine.length * (lineheight * 0.425);
+            if (testWidth > textImageCanvas.width && n > 0) {
+                lines.push(line);
+                line = words[n] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        lines.push(line);
+        for (var i = 0; i < lines.length; i++) {
+            textImageCtx.fillText(lines[i], 0, (i + 1) * lineheight);
+        }
+    }
+    function drawInputImage() {
+        inputImageCanvas.width = this.width;
+        inputImageCanvas.height = this.height;
+        inputImageCtx.drawImage(this, 0, 0);
+        outputImageCanvas.width = this.width;
+        outputImageCanvas.height = this.height;
+        textImageCanvas.width = this.width;
+        textImageCanvas.height = this.height;
+        writeMessage();
+        generateButton.disabled = false;
+    }
+    async function generateFromPrompt() {
+        generateButton.disabled = true;
+        // var url = await generateImage(prompt.value);
+        var url = "https://replicate.delivery/xezq/6pY3fI1kaySeAk1fGb38WpdDLwsBzGwjaYa59PYrvXdfvLjQB/out-0.webp";
+        var img = new Image();
+        img.src = url;
+        img.onload = drawInputImage;
+    }
+
+    function hide() {
+        var textImagePixels = textImageCtx.getImageData(0, 0, textImageCanvas.width, textImageCanvas.height)
+        var inputImagePixels = inputImageCtx.getImageData(0, 0, inputImageCanvas.width, inputImageCanvas.height)
+        var outputImagePixels = inputImageCtx.getImageData(0, 0, outputImageCanvas.width, outputImageCanvas.height)
+        for (var i = 0; i < outputImagePixels.data.length; i += 4) {
+            outputImagePixels.data[i] = (inputImagePixels.data[i] & 0xFE) | (textImagePixels.data[i] & 1);
+        }
+        outputImageCtx.putImageData(outputImagePixels, 0, 0);
+    }
+    function downloadOutputImage() {
+        var link = document.createElement('a');
+        link.download = 'encoded.png';
+        link.href = document.getElementById('outputImageCanvas').toDataURL()
+        link.click();
+    }
+    function downloadTextImage() {
+        var link = document.createElement('a');
+        link.download = 'text.png';
+        link.href = document.getElementById('textImageCanvas').toDataURL()
+        link.click();
+    }
+
+    var response;
+    var data;
+    var text;
+    async function generateImage(txt) {
+        generateButton.disabled = true;
+        var myHeaders = new Headers();
+        myHeaders.append(
+            "Authorization",
+            "Bearer r8_Eqt9gBWO5vuworjpPUliKqY8mUtqA873KhmAQ"
+        );
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Prefer", "wait");
+
+        var raw = JSON.stringify({
+            version: "b761fa16918356ee07f31fad9b0d41d8919b9ff08f999e2d298a5a35b672f47e",
+            input: {
+                model: "dev",
+                prompt: txt,
+                go_fast: false,
+                lora_scale: 1,
+                megapixels: "1",
+                num_outputs: 1,
+                aspect_ratio: "1:1",
+                output_format: "webp",
+                guidance_scale: 3.5,
+                output_quality: 80,
+                prompt_strength: 0.8,
+                extra_lora_scale: 0.8,
+                num_inference_steps: 28,
+            },
+        });
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+
+        response = await fetch(
+            "https://api.replicate.com/v1/predictions",
+            requestOptions
+        );
+        data = await response.json();
+        var link = data.output[0];
+        // console.log(data);
+        return link;
+    }
+
+
+
+</script>
+
+</html>
